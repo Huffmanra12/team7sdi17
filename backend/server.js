@@ -321,6 +321,7 @@ app.get('/workout/history/:id', async (req, res) => {
         'workouts.id as workout_id',
         'workouts.name as workout_name',
         'workouts.workout_date',
+        'workouts.completed',
         'activity.id as activity_id',
         'exercises.id as exercise_id',
         'exercises.exercise_category_id as category_id',
@@ -328,7 +329,9 @@ app.get('/workout/history/:id', async (req, res) => {
         'sets.reps',
         'sets.weight',
         'sets.distance'
-      );
+      )
+      .where('workouts.completed', true)
+
 
       const result = workoutHistory.reduce((accumulator, current) => {
         let workout = accumulator.find(e => e.id === current.workout_id);
@@ -336,6 +339,7 @@ app.get('/workout/history/:id', async (req, res) => {
           workout = {
             id: current.workout_id,
             name: current.workout_name,
+            workout_date: current.workout_date,
             activity: []
           };
           accumulator.push(workout);
@@ -491,6 +495,7 @@ app.post('/workout', async (req, res) => {
 
 })
 
+
 //////////////////////////////  WORKOUTPLAN ENDPOINT  /////////////////////////////
 app.get('/workoutplan/:id', async (req, res) => {
   const { id } = req.params
@@ -503,6 +508,7 @@ app.get('/workoutplan/:id', async (req, res) => {
       .select(
         'user_workouts.id as workout_id',
         'user_workouts.name as workout_name',
+
         'user_activity.id as activity_id',
         'exercises.id as exercise_id',
         'exercises.exercise_category_id as exercise_category_id',

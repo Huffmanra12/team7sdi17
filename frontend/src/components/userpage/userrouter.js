@@ -1,4 +1,4 @@
-import { Button, Card, Label, TextInput, Dropdown } from 'flowbite-react';
+import { Button, Card,} from 'flowbite-react';
 import { useState, useEffect } from 'react';
 import Cookies from 'js-cookie'
 import { useNavigate, useParams, Route, Routes} from 'react-router-dom'
@@ -9,6 +9,8 @@ import NewWorkout from './newworkout.js';
 import FindPlan from '../plans/findplan.js';
 import History from '../history/history.js';
 import SavedWorkouts from './SavedWorkouts.js';
+import Logo from '../../images/logo2.png'
+
 
 
 export default function UserPage() {
@@ -70,7 +72,7 @@ export default function UserPage() {
                 console.error('Failed to fetch')
             }
         }
-    }, [token, user])
+    }, [token, user,])
 
 
     if (userData.length < 1 || exercises.length < 1) {
@@ -78,11 +80,11 @@ export default function UserPage() {
     }
     return (
         <>
-            <header className='w-full h-20 bg-yellow-100'>
+            <header className='w-full h-20'>
                 <Card>
                     <div className="flex items-center justify-between">
                         <h1 className="w-fit text-2xl font-semibold cursor-pointer" onClick={()=> {setContPlan(null);
-                            setSelectedWorkout(null); Navigate(`/user/${userData[0].user_name}`)}}>Bits4Fits</h1>
+                            setSelectedWorkout(null); Navigate(`/user/${userData[0].user_name}`)}}><img src={Logo} alt="logo" width="50"/>Bits4Fits</h1>
                         <div className="flex gap-10">
                             {userData[0].role_id === 1
                                 ?
@@ -109,6 +111,7 @@ export default function UserPage() {
                     </div>
                 </Card>
             </header>
+            <div className="flex  flex-col mt-10">
             <Routes>
                 <Route path='/' element={<UserPageMain userData={userData} exercises={exercises} setContPlan={setContPlan}/>} />
                 <Route path='adminTools' element={<AdminPage />} />
@@ -118,6 +121,7 @@ export default function UserPage() {
                 <Route path='history' element={<History />} />
                 <Route path='savedworkouts' element={<SavedWorkouts setSelectedWorkout={setSelectedWorkout} />} />
             </Routes>
+            </div>
         </>
     )
 }
